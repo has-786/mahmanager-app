@@ -1,4 +1,4 @@
-package com.example.sabapp.adapter;
+package com.example.sabapp.adapterEvent;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.sabapp.Counts;
+import com.example.sabapp.EventActivity;
+import com.example.sabapp.Events;
 import com.example.sabapp.R;
 import com.example.sabapp.data.MyDbHandler;
 
@@ -29,9 +31,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     static int width=0;
     private Context context;
-    private ArrayList<Counts> arr,constArr;
+    private ArrayList<Events> arr,constArr;
     MyDbHandler db;
-    public RecyclerViewAdapter(Context context, ArrayList<Counts>  arr) {
+    public RecyclerViewAdapter(Context context, ArrayList<Events>  arr) {
         this.context = context;
         this.arr = arr;
         this.constArr=arr;
@@ -43,7 +45,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rowevent, parent, false);
         //  width=view.findViewById(R.id.layout).getLayoutParams().width;
 
         return new ViewHolder(view);
@@ -53,15 +55,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
         try {
-            Counts counts = arr.get(position);
-         //   Toast.makeText(context,"Title:    "+counts.getTopic()+"fafa",Toast.LENGTH_LONG).show();
+            Events events = arr.get(position);
+            //   Toast.makeText(context,"Title:    "+counts.getTopic()+"fafa",Toast.LENGTH_LONG).show();
             holder.id.setText(Integer.toString(position+1));
-            holder.topic.setText(counts.getTopic());
-            holder.count.setText(Integer.toString(counts.getCount()));
-            holder.timestamp.setText(counts.getTime());
-            holder.dbid.setText(Integer.toString(counts.getId()));
-            holder.phoneNo.setText(counts.getPhone());
-            holder.whatsappNo.setText(counts.getWhatsapp());
+            holder.topic.setText("Event:    "+events.getTopic());
+            holder.dbid.setText(Integer.toString(events.getId()));
+            holder.date.setText(events.getDate()+", "+events.getTime());
 
         }
         catch(Exception e){}
@@ -75,32 +74,23 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public TextView topic,count,timestamp,id,dbid,phone,whatsapp,phoneNo,whatsappNo;
+        public TextView topic,time,id,dbid,date;
         public Button b1;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
 
             topic= itemView.findViewById(R.id.t1);
-            count = itemView.findViewById(R.id.t2);
-            timestamp=itemView.findViewById(R.id.t3);
+            date=itemView.findViewById(R.id.t2);
             b1=itemView.findViewById(R.id.b1);
-            phoneNo=itemView.findViewById(R.id.phoneNo);
-            whatsappNo=itemView.findViewById(R.id.whatsappNo);
-            phone=itemView.findViewById(R.id.phone);
-            whatsapp=itemView.findViewById(R.id.whatsapp);
             id=itemView.findViewById(R.id.i);
             dbid=itemView.findViewById(R.id.dbid);
-
-           // final int i=getAdapterPosition();
-          //  Toast.makeText(context,Integer.toString(i),Toast.LENGTH_SHORT).show();
 
             b1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-                    builder1.setMessage("Do you want to delete the invitee "+topic.getText().toString());
+                    builder1.setMessage("Do you want to delete event "+topic.getText().toString());
                     builder1.setCancelable(true);
 
                     builder1.setPositiveButton(
@@ -113,7 +103,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                     Toast.makeText(context,"Event Deleted",Toast.LENGTH_SHORT).show();
                                     notifyDataSetChanged();
 
-                                    dialog.cancel();
+                                     dialog.cancel();
                                 }
                             });
 
@@ -127,66 +117,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                     AlertDialog alert11 = builder1.create();
                     alert11.show();
-                }
-            });
-
-
-            CardView inc=itemView.findViewById(R.id.card2);
-            inc.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int j=Integer.parseInt(id.getText().toString())-1;
-                    Counts c=arr.get(j);
-                    c.setCount(c.getCount()+1);
-                    arr.set(j,c);
-                    notifyDataSetChanged();
-                    db.updateContact(c);
 
 
                 }
             });
 
-            CardView dec=itemView.findViewById(R.id.card3);
-            dec.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int j=Integer.parseInt(id.getText().toString())-1;
-                    Counts c=arr.get(j);
-                    if(c.getCount()==0){
-                        Toast.makeText(context,"Count is already 0",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    c.setCount(c.getCount()-1);
-                    arr.set(j,c);
-                    notifyDataSetChanged();
-                    db.updateContact(c);
 
 
-                }
-            });
-
-phone.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        String temp = "tel:" + phoneNo.getText().toString();
-        intent.setData(Uri.parse(temp));
-
-        context.startActivity(intent);
-    }
-});
-
-            whatsapp.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    String url = "https://api.whatsapp.com/send?phone="+whatsappNo.getText().toString();
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    context.startActivity(i);
-                }
-            });
 
 
             //Toast.makeText(context,Integer.toString(width),Toast.LENGTH_SHORT).show();
@@ -194,9 +131,11 @@ phone.setOnClickListener(new View.OnClickListener() {
 
         @Override
         public void onClick(View view) {
-            Log.d("ClickFromViewHolder", "Clicked");
 
-
+            Intent i=new Intent(context,EventActivity.class);
+            i.putExtra("id",id.getText().toString());
+            context.startActivity(i);
+            Log.d("ClickFromViewHolder", id.getText().toString());
 
         }
 

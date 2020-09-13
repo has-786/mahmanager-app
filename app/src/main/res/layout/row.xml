@@ -15,34 +15,6 @@
         android:layout_marginBottom="2dp"
         android:background="@color/purple">
 
-        <TextView
-            android:id="@+id/dbid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:alpha="1"
-            android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/card1"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/t1" />
-
-        <TextView
-            android:id="@+id/count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:background="@color/purple"
-            android:fontFamily="sans-serif-condensed-light"
-            android:padding="5dp"
-            android:text="Count:"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/t2"
-            app:layout_constraintStart_toStartOf="parent" />
-
-
         <androidx.cardview.widget.CardView
             android:id="@+id/card3"
             android:layout_width="30dp"
@@ -64,18 +36,48 @@
                 app:layout_constraintStart_toEndOf="@+id/t2"
                 app:layout_constraintTop_toTopOf="parent">
 
-
                 <ImageView
                     android:id="@+id/dec"
                     android:layout_width="12dp"
                     android:layout_height="2dp"
                     android:layout_gravity="center"
+                    android:layout_marginStart="140dp"
+                    android:layout_marginBottom="16dp"
                     android:background="@color/white"
                     app:layout_constraintBottom_toBottomOf="@+id/t2"
                     app:layout_constraintStart_toEndOf="@+id/count"
                     app:srcCompat="@drawable/ic_indeterminate_check_box_black_24dp" />
+
             </androidx.cardview.widget.CardView>
         </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/dbid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:alpha="1"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/card1"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/t1" />
+
+        <TextView
+            android:id="@+id/count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:background="@color/purple"
+            android:fontFamily="sans-serif-condensed-light"
+            android:padding="5dp"
+            android:text="Total Members"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/t2"
+            app:layout_constraintStart_toStartOf="parent" />
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card2"
@@ -129,8 +131,26 @@
 
         <TextView
             android:id="@+id/t3"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/purple"
+            android:fontFamily="sans-serif-condensed-light"
+            android:padding="5dp"
+            android:text="English"
+            android:textColor="@color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/whatsapp" />
+
+        <TextView
+            android:id="@+id/phoneNo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             android:background="@color/purple"
             android:fontFamily="sans-serif-condensed-light"
             android:padding="5dp"
@@ -139,13 +159,63 @@
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/t2" />
+
+        <TextView
+            android:id="@+id/phone"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="#FFA500"
+            android:fontFamily="sans-serif-condensed-light"
+            android:gravity="center"
+            android:padding="5sp"
+            android:text="Call Now"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/t2" />
+
+        <TextView
+            android:id="@+id/whatsappNo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="48dp"
+            android:background="@color/purple"
+            android:fontFamily="sans-serif-condensed-light"
+            android:padding="5dp"
+            android:text="English"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/t2" />
+
+        <TextView
+            android:id="@+id/whatsapp"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:background="#4ac959"
+            android:fontFamily="sans-serif-condensed-light"
+            android:gravity="center"
+            android:padding="5sp"
+            android:text="WhatsApp Now"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:layout_editor_absoluteY="84dp" />
 
         <TextView
             android:id="@+id/t2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="4dp"
             android:background="@color/purple"
             android:fontFamily="sans-serif-condensed-light"
@@ -179,14 +249,12 @@
             style="@android:style/Widget.Holo.ActionBar.TabText"
             android:layout_width="60dp"
             android:layout_height="30dp"
-            android:layout_marginTop="64dp"
             android:background="@color/red"
             android:padding="2dp"
             android:text="Delete"
             android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/t2" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
