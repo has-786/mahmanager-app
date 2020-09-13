@@ -47,12 +47,11 @@
             android:id="@+id/card1"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:alpha="1"
             android:background="@color/skyblue"
             app:cardBackgroundColor="@color/skyblue"
             app:cardCornerRadius="15dp"
-            app:layout_constraintEnd_toEndOf="@+id/t1"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
@@ -60,6 +59,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
+                android:alpha="1"
                 android:background="@color/skyblue"
                 android:gravity="center"
                 android:text="TextView"
@@ -75,6 +75,7 @@
             android:id="@+id/t1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:background="@color/purple"
             android:fontFamily="sans-serif-condensed-light"
             android:padding="5dp"
@@ -108,12 +109,25 @@
             style="@android:style/Widget.Holo.ActionBar.TabText"
             android:layout_width="60dp"
             android:layout_height="30dp"
+            android:layout_marginTop="10dp"
             android:background="@color/red"
             android:padding="2dp"
             android:text="Delete"
             android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintTop_toBottomOf="@+id/t2" />
+
+        <Button
+            android:id="@+id/b2"
+            style="@android:style/Widget.Holo.ActionBar.TabText"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:background="#FFA500"
+            android:padding="2dp"
+            android:text="Edit"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/t2" />
 

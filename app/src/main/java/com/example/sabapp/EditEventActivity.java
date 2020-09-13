@@ -1,15 +1,11 @@
 package com.example.sabapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
@@ -20,36 +16,37 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.sabapp.adapterEvent.RecyclerViewAdapter;
 import com.example.sabapp.data.MyDbHandler;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
-import static com.example.sabapp.MainActivity.recyclerView;
-
-public class AddEventActivity extends AppCompatActivity {
-
+public class EditEventActivity extends AppCompatActivity {
     Button dateButton, timeButton;
     TextView dateTextView, timeTextView;
-    MyDbHandler db;
+    MyDbHandler db; int id;
     String eventTime,eventDate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_event);
-        getSupportActionBar().setTitle("Add Your Event"); // for set actionbar title
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // for add back arrow in action bar
-
+        setContentView(R.layout.activity_edit_event);
+        Intent i=getIntent();
+        id=Integer.parseInt(i.getStringExtra("id"));
+        db=new MyDbHandler(this);
+        Events events=db.getOneEvent(id);
         dateButton = findViewById(R.id.date);
         timeButton = findViewById(R.id.time);
         dateTextView = findViewById(R.id.dateTextView);
         timeTextView = findViewById(R.id.timeTextView);
 
-        if(dateTextView.getText().toString().length()==0)dateTextView.setAlpha(0);
-        if(timeTextView.getText().toString().length()==0)timeTextView.setAlpha(0);
-
+Log.d("myapp",events.toString()+"");
+        dateTextView.setText(events.getDate());
+        timeTextView.setText(events.getTime());
+Toast.makeText(this,events.getTopic(),Toast.LENGTH_SHORT).show();
+        EditText et1=findViewById(R.id.et1);
+        et1.setText(events.getTopic());
+        eventDate=events.getDate();
+        eventTime=events.getTime();
     }
 
     public void save(View v)
@@ -58,16 +55,17 @@ public class AddEventActivity extends AppCompatActivity {
         EditText et1=findViewById(R.id.et1);
         events.setTopic(et1.getText().toString());
         if(et1.getText().toString().equals("")
-        || dateTextView.getText().toString().equals("")
-        || timeTextView.getText().toString().equals("")
+                || dateTextView.getText().toString().equals("")
+                || timeTextView.getText().toString().equals("")
         ) {  Toast.makeText(this,"Please Fill The Places",Toast.LENGTH_SHORT).show();return;}
 
 
         events.setDate(eventDate);
         events.setTime(eventTime);
+        events.setId(id);
 
         db=new MyDbHandler(this);
-        db.addEvents(events);
+        db.updateEvent(events);
 
         ArrayList<Events> arr=db.getAllEvents();
         ArrayList<Events> p=new ArrayList<>();
@@ -80,11 +78,13 @@ public class AddEventActivity extends AppCompatActivity {
                     "Time: " + arr.get(i).getTime() + "\n");
         }
 
-       // RecyclerViewAdapter recyclerViewAdapter=new RecyclerViewAdapter(this,p);
-       // recyclerView.setAdapter(recyclerViewAdapter);
+        // RecyclerViewAdapter recyclerViewAdapter=new RecyclerViewAdapter(this,p);
+        // recyclerView.setAdapter(recyclerViewAdapter);
         Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
-       // Intent intent=new Intent(this,MainActivity.class);
+
+        //Intent intent=new Intent(this,MainActivity.class);
         //startActivity(intent);
+
         finish();
     }
 
@@ -103,7 +103,6 @@ public class AddEventActivity extends AppCompatActivity {
                 calendar1.set(Calendar.MINUTE, minute);
                 String dateText = DateFormat.format("h:mm a", calendar1).toString();
                 timeTextView.setText(dateText);
-                timeTextView.setAlpha(1);
                 eventTime=dateText;
             }
         }, HOUR, MINUTE, false);
@@ -129,8 +128,6 @@ public class AddEventActivity extends AppCompatActivity {
                 String dateText = DateFormat.format("EEEE, MMM d, yyyy", calendar1).toString();
 
                 dateTextView.setText(dateText);
-                dateTextView.setAlpha(1);
-
                 eventDate=dateText;
             }
         }, YEAR, MONTH, DATE);
@@ -142,9 +139,4 @@ public class AddEventActivity extends AppCompatActivity {
 
     }
 
-
-
 }
-
-
-

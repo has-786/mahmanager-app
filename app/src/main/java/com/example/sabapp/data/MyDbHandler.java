@@ -14,6 +14,7 @@ import com.example.sabapp.params.Params;
 
 import java.util.ArrayList;
 
+import static com.example.sabapp.params.Params.KEY_EVENTID;
 import static com.example.sabapp.params.Params.KEY_ID;
 
 public class MyDbHandler extends SQLiteOpenHelper {
@@ -181,6 +182,70 @@ public class MyDbHandler extends SQLiteOpenHelper {
         String arr[] = new String[10];
         //Lets update now
         return db.delete(Params.TABLE_NAME2, KEY_ID + "=" + id, null);
+
+    }
+
+    public ArrayList<Counts> getAllPoints1(){
+
+        ArrayList<Counts> countsList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Generate the query to read from the database
+        String select = "SELECT * FROM " + Params.TABLE_NAME1;
+        Cursor cursor = db.rawQuery(select, null);
+        //Loop through now
+        if(cursor.moveToFirst()){
+            do{
+                Counts counts = new Counts();
+                counts.setId(Integer.parseInt(cursor.getString(0)));
+                counts.setTopic(cursor.getString(1));
+                counts.setCount(Integer.parseInt(cursor.getString(2)));
+                counts.setEventId(Integer.parseInt(cursor.getString(3)));
+                counts.setTime(cursor.getString(4));
+                counts.setPhone(cursor.getString(5));
+                counts.setWhatsapp(cursor.getString(6));
+
+                countsList.add(counts);
+            }while(cursor.moveToNext());
+        }
+
+        Log.d("myapp1",countsList.size()+"");
+
+        return countsList;
+    }
+
+
+    public int deleteOneContact(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String arr[] = new String[10];
+        //Lets update now
+        return db.delete(Params.TABLE_NAME1, KEY_EVENTID + "=" + id, null);
+
+    }
+
+
+    public Events getOneEvent(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Events events = new Events();
+
+        // Generate the query to read from the database
+        String select = "SELECT * FROM " + Params.TABLE_NAME2+" WHERE ID="+id;
+        Cursor cursor = db.rawQuery(select, null);
+        //Loop through now
+        if(cursor.moveToFirst()){
+            do{
+                events.setId(Integer.parseInt(cursor.getString(0)));
+                events.setTopic(cursor.getString(1));
+                events.setDate(cursor.getString(2));
+                events.setTime(cursor.getString(3));
+                Log.d("myapp1",events.getTopic());
+                return events;
+
+            }while(cursor.moveToNext());
+        }
+        return events;
+
+     //   Log.d("myapp1",eventList.size()+"");
 
     }
 

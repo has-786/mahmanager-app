@@ -72,10 +72,10 @@ public class EventActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent i=new Intent(EventActivity.this,AddActivity.class);
+               Intent i=new Intent(EventActivity.this,AddActivity.class);
                 i.putExtra("id",Integer.toString(id));
                 startActivity(i);
-                finish();
+              //  finish();
             }
         });
 
@@ -83,6 +83,47 @@ public class EventActivity extends AppCompatActivity {
 
 
 
+    }
+
+
+    protected void onStart() {
+        super.onStart();
+        recyclerView = findViewById(R.id.recycle);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // startActivity(new Intent(this,PhoneActivity.class));
+        et1 = findViewById(R.id.et1);
+        et2 = findViewById(R.id.et2);
+        b2 = findViewById(R.id.b2);
+        getSupportActionBar().setTitle("Invitees");
+
+        Intent intent = getIntent();
+        String x = intent.getStringExtra("id");
+        id = Integer.parseInt(x);
+        db = new MyDbHandler(this);
+        arr = db.getAllPoints(id);
+        p = new ArrayList<>();
+        for (int i = 0; i < arr.size(); i++) {
+            p.add(arr.get(i));
+            Log.d("myapp", "\nId: " + arr.get(i).getId() + "\n" +
+                    "Topic: " + arr.get(i).getTopic() + "\n" +
+                    "Count: " + arr.get(i).getCount() + "\n" +
+                    "Time: " + arr.get(i).getTime() + "\n");
+        }
+
+        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this, p);
+        recyclerView.setAdapter(recyclerViewAdapter);
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent i=new Intent(EventActivity.this,AddActivity.class);
+                i.putExtra("id",Integer.toString(id));
+                startActivity(i);
+                //  finish();
+            }
+        });
     }
 
 }

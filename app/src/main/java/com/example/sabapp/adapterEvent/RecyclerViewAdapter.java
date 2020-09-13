@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.sabapp.Counts;
+import com.example.sabapp.EditEventActivity;
 import com.example.sabapp.EventActivity;
 import com.example.sabapp.Events;
 import com.example.sabapp.R;
@@ -75,7 +76,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView topic,time,id,dbid,date;
-        public Button b1;
+        public Button b1,b2;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
@@ -83,6 +84,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             topic= itemView.findViewById(R.id.t1);
             date=itemView.findViewById(R.id.t2);
             b1=itemView.findViewById(R.id.b1);
+            b2=itemView.findViewById(R.id.b2);
+
             id=itemView.findViewById(R.id.i);
             dbid=itemView.findViewById(R.id.dbid);
 
@@ -102,6 +105,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                     arr.remove(Integer.parseInt(id.getText().toString())-1);
                                     Toast.makeText(context,"Event Deleted",Toast.LENGTH_SHORT).show();
                                     notifyDataSetChanged();
+
+                                    db.deleteOneContact(Integer.parseInt(dbid.getText().toString()));
+                                   // arr.remove(Integer.parseInt(id.getText().toString())-1);
+                                   // Toast.makeText(context,"Event Deleted",Toast.LENGTH_SHORT).show();
+                                   // notifyDataSetChanged();
 
                                      dialog.cancel();
                                 }
@@ -123,7 +131,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             });
 
 
-
+            b2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i=new Intent(context, EditEventActivity.class);
+                    i.putExtra("id",dbid.getText().toString());
+                    context.startActivity(i);
+                }
+            });
 
 
             //Toast.makeText(context,Integer.toString(width),Toast.LENGTH_SHORT).show();

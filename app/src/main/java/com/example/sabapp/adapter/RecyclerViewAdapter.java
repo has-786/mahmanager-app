@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.sabapp.Counts;
+import com.example.sabapp.EditEventActivity;
 import com.example.sabapp.R;
 import com.example.sabapp.data.MyDbHandler;
 
@@ -58,7 +59,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             holder.id.setText(Integer.toString(position+1));
             holder.topic.setText(counts.getTopic());
             holder.count.setText(Integer.toString(counts.getCount()));
-            holder.timestamp.setText(counts.getTime());
             holder.dbid.setText(Integer.toString(counts.getId()));
             holder.phoneNo.setText(counts.getPhone());
             holder.whatsappNo.setText(counts.getWhatsapp());
@@ -76,15 +76,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView topic,count,timestamp,id,dbid,phone,whatsapp,phoneNo,whatsappNo;
-        public Button b1;
+        public Button b1,b2;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
 
             topic= itemView.findViewById(R.id.t1);
             count = itemView.findViewById(R.id.t2);
-            timestamp=itemView.findViewById(R.id.t3);
             b1=itemView.findViewById(R.id.b1);
+            b2=itemView.findViewById(R.id.b2);
+
             phoneNo=itemView.findViewById(R.id.phoneNo);
             whatsappNo=itemView.findViewById(R.id.whatsappNo);
             phone=itemView.findViewById(R.id.phone);
@@ -108,9 +109,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id1) {
 
-                                    db.deleteEvent(Integer.parseInt(dbid.getText().toString()));
+                                    db.deleteContact(Integer.parseInt(dbid.getText().toString()));
                                     arr.remove(Integer.parseInt(id.getText().toString())-1);
-                                    Toast.makeText(context,"Event Deleted",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context,"Invitee Deleted",Toast.LENGTH_SHORT).show();
                                     notifyDataSetChanged();
 
                                     dialog.cancel();
@@ -131,7 +132,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             });
 
 
-            CardView inc=itemView.findViewById(R.id.card2);
+
+                    CardView inc=itemView.findViewById(R.id.card2);
             inc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

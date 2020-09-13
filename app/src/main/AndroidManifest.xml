@@ -11,7 +11,8 @@
         android:roundIcon="@drawable/saba"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddEventActivity"></activity>
+        <activity android:name=".EditEventActivity"></activity>
+        <activity android:name=".AddEventActivity" />
         <activity android:name=".EventActivity" />
         <activity android:name=".PhoneActivity" />
         <activity android:name=".SplashActivity">

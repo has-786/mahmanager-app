@@ -39,12 +39,19 @@ public class AddActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-        getSupportActionBar().setTitle("Add Your Count"); // for set actionbar title
+        getSupportActionBar().setTitle("Add An Invitee"); // for set actionbar title
         getSupportActionBar().setDisplayHomeAsUpEnabled(true); // for add back arrow in action bar
         Intent intent=getIntent();
         String x=intent.getStringExtra("id");
         Log.d("myapp1",x);
          id=Integer.parseInt(x);
+        tvContactNumber=findViewById(R.id.tvContactNumber);
+        tvWhatsappNumber=findViewById(R.id.tvWhatsappNumber);
+
+
+        if(tvWhatsappNumber.getText().toString().length()==0)tvWhatsappNumber.setAlpha(0);
+        if(tvContactNumber.getText().toString().length()==0)tvContactNumber.setAlpha(0);
+
 
     }
 
@@ -125,10 +132,10 @@ public class AddActivity extends AppCompatActivity {
       //  RecyclerViewAdapter recyclerViewAdapter=new RecyclerViewAdapter(this,p);
     //    recyclerView.setAdapter(recyclerViewAdapter);
         Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
-        Intent intent=new Intent(this,EventActivity.class);
-        intent.putExtra("id",Integer.toString(id));
+        //Intent intent=new Intent(this,EventActivity.class);
+       // intent.putExtra("id",Integer.toString(id));
         //intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-        startActivity(intent);
+        //startActivity(intent);
         finish();
     }
 
@@ -167,6 +174,8 @@ public class AddActivity extends AppCompatActivity {
                         contactNumber = cursor.getString(phoneIndex);
                         tvContactNumber=findViewById(R.id.tvContactNumber);
                         tvContactNumber.setText(contactNumber);
+                        tvContactNumber.setAlpha(1);
+
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -185,6 +194,7 @@ public class AddActivity extends AppCompatActivity {
                         whatsappNumber = cursor.getString(phoneIndex);
                         tvWhatsappNumber=findViewById(R.id.tvWhatsappNumber);
                         tvWhatsappNumber.setText(whatsappNumber);
+                        tvWhatsappNumber.setAlpha(1);
 
                     } catch (Exception e) {
                         e.printStackTrace();
