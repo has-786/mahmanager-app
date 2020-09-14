@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,13 +22,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sabapp.Counts;
 import com.example.sabapp.EditEventActivity;
+import com.example.sabapp.Events;
+import com.example.sabapp.MainActivity;
 import com.example.sabapp.R;
 import com.example.sabapp.data.MyDbHandler;
 
 import java.util.ArrayList;
 
+import static com.example.sabapp.EventActivity.total;
+import static com.example.sabapp.EventActivity.totalM;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>  {
+
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements Filterable {
 
     static int width=0;
     private Context context;
@@ -77,7 +84,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView topic,count,timestamp,id,dbid,phone,whatsapp,phoneNo,whatsappNo;
         public Button b1,b2;
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
 
@@ -93,8 +100,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             id=itemView.findViewById(R.id.i);
             dbid=itemView.findViewById(R.id.dbid);
 
-           // final int i=getAdapterPosition();
-          //  Toast.makeText(context,Integer.toString(i),Toast.LENGTH_SHORT).show();
 
             b1.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -109,6 +114,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id1) {
 
+                                    total-=arr.get(Integer.parseInt(id.getText().toString())-1).getCount();
+                                    totalM.setText(""+total);
                                     db.deleteContact(Integer.parseInt(dbid.getText().toString()));
                                     arr.remove(Integer.parseInt(id.getText().toString())-1);
                                     Toast.makeText(context,"Invitee Deleted",Toast.LENGTH_SHORT).show();
@@ -143,8 +150,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     arr.set(j,c);
                     notifyDataSetChanged();
                     db.updateContact(c);
-
-
+                    total++;
+                    totalM.setText(Integer.toString(total));
                 }
             });
 
@@ -158,7 +165,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         Toast.makeText(context,"Count is already 0",Toast.LENGTH_SHORT).show();
                         return;
                     }
-
+                    total--;
+                    totalM.setText(Integer.toString(total));
                     c.setCount(c.getCount()-1);
                     arr.set(j,c);
                     notifyDataSetChanged();
@@ -190,8 +198,6 @@ phone.setOnClickListener(new View.OnClickListener() {
                 }
             });
 
-
-            //Toast.makeText(context,Integer.toString(width),Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -204,6 +210,49 @@ phone.setOnClickListener(new View.OnClickListener() {
 
     }
 
+
+
+    @Override
+    public Filter getFilter() {
+
+        return exampleFilter;
+    }
+
+    private Filter exampleFilter = new Filter() {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<Counts> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList=constArr;
+            } else {
+                try{  String filterPattern = constraint.toString().toLowerCase().trim();
+                    String[] p=filterPattern.split(" ");
+                    for (int j=0;j<p.length;j++)
+                    {
+                        for (int i=0;i<constArr.size();i++) {
+
+                            if (constArr.get(i).getTopic().toLowerCase().contains(p[j])) {
+                                filteredList.add(constArr.get(i));}
+                        }
+                    }
+
+                }catch (Exception e){}
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            arr=new ArrayList<>();
+            arr=(ArrayList<Counts>) results.values;
+            notifyDataSetChanged();
+        }
+    };
 
 
 }

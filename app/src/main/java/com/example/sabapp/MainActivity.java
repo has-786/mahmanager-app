@@ -5,27 +5,28 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.EventLog;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sabapp.adapterEvent.RecyclerViewAdapter;
 import com.example.sabapp.data.MyDbHandler;
-import com.example.sabapp.params.Params;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
     MyDbHandler db;
+    public static int up=0,com=0,tot=0;
+    public static TextView total,upcoming,completed;
+
+
     private EditText et1,et2;
     private Button b2;
     ArrayList<Events> arr;
@@ -36,48 +37,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
          recyclerView=findViewById(R.id.recycle);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-      // startActivity(new Intent(this,PhoneActivity.class));
+
         et1=findViewById(R.id.et1);
         et2=findViewById(R.id.et2);
         b2=findViewById(R.id.b2);
-
-        db=new MyDbHandler(this);
-        arr=db.getAllEvents();
-        p=new ArrayList<>();
-        ArrayList<Counts> arr1=db.getAllPoints1();
-        Log.d("myapp2",arr1.size()+"");
-        p=new ArrayList<>();
-
-        for (int i=0;i<arr.size();i++)
-        {
-            p.add(arr.get(i));
-            Log.d("myapp", "\nId: " + arr.get(i).getId() + "\n" +
-                    "Topic: " + arr.get(i).getTopic() + "\n" +
-                    "Count: " + arr.get(i).getDate() + "\n" +
-                    "Time: " + arr.get(i).getTime() + "\n");
-        }
-
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this, p);
-        recyclerView.setAdapter(recyclerViewAdapter);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent i=new Intent(MainActivity.this,AddEventActivity.class);
-                startActivity(i);
-              //  finish();
-
-                //  points = 0;
-
-            }
-        });
-
-
-
+        total=findViewById(R.id.Total);
+        upcoming=findViewById(R.id.Upcoming);
+        completed=findViewById(R.id.Completed);
 
 
     }
@@ -85,28 +51,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        recyclerView=findViewById(R.id.recycle);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        // startActivity(new Intent(this,PhoneActivity.class));
-        et1=findViewById(R.id.et1);
-        et2=findViewById(R.id.et2);
-        b2=findViewById(R.id.b2);
 
         db=new MyDbHandler(this);
+
         arr=db.getAllEvents();
-        p=new ArrayList<>();
 
-        for (int i=0;i<arr.size();i++)
-        {
-            p.add(arr.get(i));
-            Log.d("myapp", "\nId: " + arr.get(i).getId() + "\n" +
-                    "Topic: " + arr.get(i).getTopic() + "\n" +
-                    "Count: " + arr.get(i).getDate() + "\n" +
-                    "Time: " + arr.get(i).getTime() + "\n");
-        }
+        tot=arr.size(); up=0; com=0;
+        Long mili=System.currentTimeMillis();
+            for (int i = 0; i < arr.size(); i++) {
+                long x = Long.parseLong(arr.get(i).getMili());
+                if (x > mili) up++;
+                else com++;
+            }
 
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this, p);
+        total.setText(Integer.toString(tot));
+        upcoming.setText(Integer.toString(up));
+        completed.setText(Integer.toString(com));
+
+        final RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter(this, arr);
         recyclerView.setAdapter(recyclerViewAdapter);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -116,15 +80,30 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent i=new Intent(MainActivity.this,AddEventActivity.class);
                 startActivity(i);
-                //  finish();
-
-                //  points = 0;
-
             }
         });
 
+        final SearchView searchView = findViewById(R.id.search);
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        searchView.setClickable(true);
 
-
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                recyclerViewAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setIconified(false);
+            }
+        });
 
 
     }

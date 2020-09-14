@@ -28,6 +28,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static com.example.sabapp.MainActivity.recyclerView;
+import  static com.example.sabapp.MainActivity.tot;
+import  static com.example.sabapp.MainActivity.up;
+import  static com.example.sabapp.MainActivity.com;
 
 public class AddEventActivity extends AppCompatActivity {
 
@@ -35,6 +38,7 @@ public class AddEventActivity extends AppCompatActivity {
     TextView dateTextView, timeTextView;
     MyDbHandler db;
     String eventTime,eventDate;
+    long mili=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,9 +69,15 @@ public class AddEventActivity extends AppCompatActivity {
 
         events.setDate(eventDate);
         events.setTime(eventTime);
+        events.setMili(Long.toString(mili));
+        Log.d("faf",Long.toString(mili));
 
         db=new MyDbHandler(this);
         db.addEvents(events);
+
+        tot++;
+        if(mili>System.currentTimeMillis())up++;
+        else com++;
 
         ArrayList<Events> arr=db.getAllEvents();
         ArrayList<Events> p=new ArrayList<>();
@@ -80,16 +90,14 @@ public class AddEventActivity extends AppCompatActivity {
                     "Time: " + arr.get(i).getTime() + "\n");
         }
 
-       // RecyclerViewAdapter recyclerViewAdapter=new RecyclerViewAdapter(this,p);
-       // recyclerView.setAdapter(recyclerViewAdapter);
+
         Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
-       // Intent intent=new Intent(this,MainActivity.class);
-        //startActivity(intent);
+
         finish();
     }
 
     public void handleTimeButton(View v) {
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         int HOUR = calendar.get(Calendar.HOUR);
         int MINUTE = calendar.get(Calendar.MINUTE);
         boolean is24HourFormat = DateFormat.is24HourFormat(this);
@@ -105,6 +113,9 @@ public class AddEventActivity extends AppCompatActivity {
                 timeTextView.setText(dateText);
                 timeTextView.setAlpha(1);
                 eventTime=dateText;
+                mili+=(hour*3600+minute*60)*1000;
+                Log.d("myapp5",""+mili);
+
             }
         }, HOUR, MINUTE, false);
 
@@ -127,6 +138,8 @@ public class AddEventActivity extends AppCompatActivity {
                 calendar1.set(Calendar.MONTH, month);
                 calendar1.set(Calendar.DATE, date);
                 String dateText = DateFormat.format("EEEE, MMM d, yyyy", calendar1).toString();
+
+                mili+=calendar1.getTimeInMillis();
 
                 dateTextView.setText(dateText);
                 dateTextView.setAlpha(1);

@@ -16,5 +16,6 @@ public class Params {
     public static final  String KEY_TIME="time";
     public static final String KEY_PHONE="phone";
     public static final String KEY_WHATSAPP="whatsapp";
+    public static final String KEY_MILI="mili";
 
 }

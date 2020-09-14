@@ -11,10 +11,10 @@
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#fffdd0"
+        android:cropToPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="#b300b3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:cropToPadding="true"
-        app:srcCompat="@drawable/saba" />
+        app:srcCompat="@drawable/mahmanager" />
 </androidx.constraintlayout.widget.ConstraintLayout>

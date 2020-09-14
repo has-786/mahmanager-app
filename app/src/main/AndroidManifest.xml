@@ -6,15 +6,15 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/saba"
-        android:label="Invitation Tracker"
-        android:roundIcon="@drawable/saba"
+        android:icon="@drawable/mahmanager"
+        android:label="Mahmanager"
+        android:roundIcon="@drawable/mahmanager"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditEventActivity"></activity>
-        <activity android:name=".AddEventActivity" />
-        <activity android:name=".EventActivity" />
-        <activity android:name=".PhoneActivity" />
+        <activity android:name=".EditEventActivity" android:parentActivityName=".MainActivity"/>
+        <activity android:name=".AddEventActivity"  android:parentActivityName=".MainActivity"/>
+        <activity android:name=".EventActivity"  android:parentActivityName=".MainActivity"/>
+        <activity android:name=".PhoneActivity"  />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

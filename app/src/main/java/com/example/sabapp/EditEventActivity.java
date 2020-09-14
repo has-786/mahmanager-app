@@ -21,16 +21,27 @@ import com.example.sabapp.data.MyDbHandler;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import static com.example.sabapp.MainActivity.completed;
+import  static com.example.sabapp.MainActivity.tot;
+import  static com.example.sabapp.MainActivity.up;
+import  static com.example.sabapp.MainActivity.com;
+import static com.example.sabapp.MainActivity.upcoming;
+
 public class EditEventActivity extends AppCompatActivity {
     Button dateButton, timeButton;
     TextView dateTextView, timeTextView;
     MyDbHandler db; int id;
     String eventTime,eventDate;
+    long mili=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_event);
         Intent i=getIntent();
+        getSupportActionBar().setTitle("Edit The Event");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // for add back arrow in action bar
+
         id=Integer.parseInt(i.getStringExtra("id"));
         db=new MyDbHandler(this);
         Events events=db.getOneEvent(id);
@@ -42,11 +53,12 @@ public class EditEventActivity extends AppCompatActivity {
 Log.d("myapp",events.toString()+"");
         dateTextView.setText(events.getDate());
         timeTextView.setText(events.getTime());
-Toast.makeText(this,events.getTopic(),Toast.LENGTH_SHORT).show();
+//Toast.makeText(this,events.getTopic(),Toast.LENGTH_SHORT).show();
         EditText et1=findViewById(R.id.et1);
         et1.setText(events.getTopic());
         eventDate=events.getDate();
         eventTime=events.getTime();
+        mili=Long.parseLong(events.getMili());
     }
 
     public void save(View v)
@@ -59,13 +71,25 @@ Toast.makeText(this,events.getTopic(),Toast.LENGTH_SHORT).show();
                 || timeTextView.getText().toString().equals("")
         ) {  Toast.makeText(this,"Please Fill The Places",Toast.LENGTH_SHORT).show();return;}
 
-
         events.setDate(eventDate);
         events.setTime(eventTime);
         events.setId(id);
+        events.setMili(Long.toString(mili));
 
         db=new MyDbHandler(this);
         db.updateEvent(events);
+
+      /*  if(Long.parseLong(events.getMili())>System.currentTimeMillis() &&
+            mili<System.currentTimeMillis())
+        {
+            up++;  com--;
+        }
+        else if(Long.parseLong(events.getMili())<System.currentTimeMillis() &&
+                mili>System.currentTimeMillis())
+        {
+            up--;   com++;
+        }*/
+
 
         ArrayList<Events> arr=db.getAllEvents();
         ArrayList<Events> p=new ArrayList<>();
@@ -76,16 +100,12 @@ Toast.makeText(this,events.getTopic(),Toast.LENGTH_SHORT).show();
                     "Topic: " + arr.get(i).getTopic() + "\n" +
                     "Date: " + arr.get(i).getDate() + "\n" +
                     "Time: " + arr.get(i).getTime() + "\n");
+
         }
 
-        // RecyclerViewAdapter recyclerViewAdapter=new RecyclerViewAdapter(this,p);
-        // recyclerView.setAdapter(recyclerViewAdapter);
         Toast.makeText(this,"Saved",Toast.LENGTH_SHORT).show();
-
-        //Intent intent=new Intent(this,MainActivity.class);
-        //startActivity(intent);
-
         finish();
+
     }
 
     public void handleTimeButton(View v) {
@@ -104,6 +124,8 @@ Toast.makeText(this,events.getTopic(),Toast.LENGTH_SHORT).show();
                 String dateText = DateFormat.format("h:mm a", calendar1).toString();
                 timeTextView.setText(dateText);
                 eventTime=dateText;
+                mili+=(hour*3600+minute*60)*1000;
+
             }
         }, HOUR, MINUTE, false);
 
@@ -129,6 +151,7 @@ Toast.makeText(this,events.getTopic(),Toast.LENGTH_SHORT).show();
 
                 dateTextView.setText(dateText);
                 eventDate=dateText;
+                mili+=calendar1.getTimeInMillis();
             }
         }, YEAR, MONTH, DATE);
 

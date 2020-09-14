@@ -2,19 +2,31 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
 
+    <SearchView
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:queryHint="Search For Event"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycle"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -22,17 +34,117 @@
         android:layout_height="wrap_content"
 
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="36dp"
         android:backgroundTintMode="screen"
         android:foregroundGravity="center"
         android:textAlignment="center"
         app:backgroundTint="@color/fostergreen"
-        app:fabCustomSize="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:fabCustomSize="60dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:rippleColor="@color/fostergreen"
         app:srcCompat="@drawable/ic_add_circle_black_24dp" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+
+        <TextView
+            android:id="@+id/Total"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/purple"
+
+            android:text="TextView"
+            android:layout_weight="1"
+            android:padding="2sp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search" />
+
+        <TextView
+            android:id="@+id/Upcoming"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/fostergreen"
+            android:padding="2sp"
+            android:layout_weight="1"
+
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/Completed"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/red"
+            android:padding="2sp"
+            android:text="TextView"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search">
+
+        <TextView
+            android:id="@+id/tot"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/purple"
+            android:padding="2sp"
+            android:text="Total"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search" />
+
+        <TextView
+            android:id="@+id/up"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/fostergreen"
+            android:padding="2sp"
+            android:layout_weight="1"
+
+            android:text="Upcoming"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/com"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/red"
+            android:padding="2sp"
+            android:layout_weight="1"
+
+            android:text="Completed"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

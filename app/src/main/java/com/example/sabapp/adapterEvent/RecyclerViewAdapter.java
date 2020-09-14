@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +27,18 @@ import com.example.sabapp.Events;
 import com.example.sabapp.R;
 import com.example.sabapp.data.MyDbHandler;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 
+import static com.example.sabapp.MainActivity.completed;
+import  static com.example.sabapp.MainActivity.tot;
+import static com.example.sabapp.MainActivity.total;
+import  static com.example.sabapp.MainActivity.up;
+import  static com.example.sabapp.MainActivity.com;
+import static com.example.sabapp.MainActivity.upcoming;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>  {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements  Filterable  {
 
     static int width=0;
     private Context context;
@@ -77,7 +87,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView topic,time,id,dbid,date;
         public Button b1,b2;
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
 
@@ -100,18 +110,33 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             "Yes",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id1) {
+                                  tot--;
+                                    Events e=db.getOneEvent(Integer.parseInt(dbid.getText().toString()));
+                                  //  Log.d("mypp4",e.getTopic());
+
+                                    if(e.getMili()==null)
+                                    Log.d("mypp3","null");
+                            if(Long.parseLong(e.getMili())>System.currentTimeMillis())
+                                up--;
+                            else
+                                com--;
+
+                                    total.setText(Integer.toString(tot));
+                                    upcoming.setText(Integer.toString(up));
+                                    completed.setText(Integer.toString(com));
 
                                     db.deleteEvent(Integer.parseInt(dbid.getText().toString()));
                                     arr.remove(Integer.parseInt(id.getText().toString())-1);
                                     Toast.makeText(context,"Event Deleted",Toast.LENGTH_SHORT).show();
+
+
+                                    db.deleteContacts(Integer.parseInt(dbid.getText().toString()));
+
                                     notifyDataSetChanged();
 
-                                    db.deleteOneContact(Integer.parseInt(dbid.getText().toString()));
-                                   // arr.remove(Integer.parseInt(id.getText().toString())-1);
-                                   // Toast.makeText(context,"Event Deleted",Toast.LENGTH_SHORT).show();
-                                   // notifyDataSetChanged();
 
-                                     dialog.cancel();
+
+                                    dialog.cancel();
                                 }
                             });
 
@@ -136,6 +161,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 public void onClick(View v) {
                     Intent i=new Intent(context, EditEventActivity.class);
                     i.putExtra("id",dbid.getText().toString());
+                  //  i.putExtra("id",1);
                     context.startActivity(i);
                 }
             });
@@ -148,7 +174,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public void onClick(View view) {
 
             Intent i=new Intent(context,EventActivity.class);
-            i.putExtra("id",id.getText().toString());
+            i.putExtra("id",dbid.getText().toString());
             context.startActivity(i);
             Log.d("ClickFromViewHolder", id.getText().toString());
 
@@ -157,7 +183,53 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
+    @Override
+    public Filter getFilter() {
 
+        return exampleFilter;
+    }
+
+    private Filter exampleFilter = new Filter() {
+
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            ArrayList<Events> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList=constArr;
+            } else {
+                try{  String filterPattern = constraint.toString().toLowerCase().trim();
+                    String[] p=filterPattern.split(" ");
+                    for(int i=0;i<p.length;i++)
+                        Log.d("myapp7",p[i]);
+
+                    for (int j=0;j<p.length;j++)
+                    {
+                        for (int i=0;i<constArr.size();i++) {
+
+                            if (constArr.get(i).getTopic().toLowerCase().contains(p[j])) {
+                                    Log.d("myapp7",constArr.get(i).getTopic()+" "+p[j]);
+                                    filteredList.add(constArr.get(i));
+                                }
+                        }
+                    }
+
+                }catch (Exception e){}
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            arr=new ArrayList<>();
+
+            arr=(ArrayList<Events>) results.values;
+            notifyDataSetChanged();
+        }
+    };
 }
 
 

@@ -17,6 +17,27 @@
             android:layout_height="wrap_content">
 
 
+            <!-- covers the entire width of the screen -->
+            android:layout_width="match_parent"
+
+            <!-- covers as much height as required. -->
+            android:layout_height="wrap_content"
+
+            android:text="Painting"
+            android:layout_marginTop="16dp"
+            android:textSize="18sp" />
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="checkbox"
+                android:text="Whatsapp number is same as Phone Number"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/et1"
+                app:layout_constraintTop_toBottomOf="@+id/tvContactNumber" />
+
             <Button
                 android:id="@+id/b2"
                 app:layout_constraintEnd_toEndOf="parent"

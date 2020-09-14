@@ -41,7 +41,8 @@ public class MyDbHandler extends SQLiteOpenHelper {
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ Params.KEY_TOPIC
                 + " TEXT, " + Params.KEY_DATE+ " TEXT, " +
                 Params.KEY_TIME
-                + " TEXT"+ ")";
+                + " TEXT, "+Params.KEY_MILI
+                 + " TEXT"+ ")";
         Log.d("myapp", "Query being run is : "+ create);
         db.execSQL(create);
 
@@ -78,6 +79,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
         values.put(Params.KEY_TOPIC, events.getTopic());
         values.put(Params.KEY_TIME, events.getTime());
         values.put(Params.KEY_DATE, events.getDate());
+        values.put(Params.KEY_MILI, events.getMili());
 
         db.insert(Params.TABLE_NAME2, null, values);
         Log.d("myapp", "Successfully inserted event");
@@ -128,6 +130,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
                 events.setTopic(cursor.getString(1));
                 events.setDate(cursor.getString(2));
                 events.setTime(cursor.getString(3));
+                events.setMili(cursor.getString(4));
 
                 eventList.add(events);
             }while(cursor.moveToNext());
@@ -163,6 +166,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
         values.put(Params.KEY_TOPIC, events.getTopic());
         values.put(Params.KEY_DATE, events.getDate());
         values.put(Params.KEY_TIME, events.getTime());
+        values.put(Params.KEY_MILI, events.getMili());
 
         //Lets update now
         return db.update(Params.TABLE_NAME2, values, KEY_ID + "=?",
@@ -215,7 +219,7 @@ public class MyDbHandler extends SQLiteOpenHelper {
     }
 
 
-    public int deleteOneContact(int id) {
+    public int deleteContacts(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         String arr[] = new String[10];
         //Lets update now
@@ -238,6 +242,8 @@ public class MyDbHandler extends SQLiteOpenHelper {
                 events.setTopic(cursor.getString(1));
                 events.setDate(cursor.getString(2));
                 events.setTime(cursor.getString(3));
+                events.setMili(cursor.getString(4));
+
                 Log.d("myapp1",events.getTopic());
                 return events;
 

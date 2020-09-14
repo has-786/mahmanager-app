@@ -1,7 +1,7 @@
 package com.example.sabapp;
 
 public class Events {
-    int id;  String topic,time,date;
+    int id;  String topic,time,date,mili;
 
     public int getId()
     {return id;}
@@ -21,6 +21,12 @@ public class Events {
 
     public void setTime(String t)
     {time=t;}
+
+    public String getMili()
+    {return mili;}
+
+    public void setMili(String t)
+    {mili=t;}
 
     public void setDate(String t)
     {date=t;}

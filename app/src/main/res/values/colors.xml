@@ -12,5 +12,6 @@
     <color name="red">#ff0080</color>
     <color name="black">#000000</color>>
     <color name="fostergreen">#228B22</color>
-    <color name="skyblue">#87ceeb</color>>
+    <color name="skyblue">#87ceeb</color>
+    <color name="cream">#fffdd0</color>>
 </resources>
